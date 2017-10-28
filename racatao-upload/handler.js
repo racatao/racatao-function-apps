@@ -18,8 +18,9 @@ function handler(event, context) {
     .on('data', data => context.log('File [%s] got %d bytes', fieldname, data.length))
     .on('end', () => context.log('File [%s] Finished', fieldname));
   })
-  .on('field', (fieldname, val) => {
+  .on('field', (fieldname, val, fieldnameTruncated, valTruncated) => {
     context.log('Field [%s]: value: %j', fieldname, val)
+    context.log('FieldTruncated [%s]: valueTruncated: %j', fieldnameTruncated, valTruncated)
     if (fieldname == 'file') {
       context.bindings.uploadBlob = data;
     }

@@ -1,0 +1,12 @@
+{
+  "bindings": [
+    {
+      "type": "blobTrigger",
+      "name": "triggerBlob",
+      "path": "raw-files/{name}",
+      "connection": "AzureWebJobsStorage",
+      "direction": "in"
+    }
+  ],
+  "disabled": true
+}

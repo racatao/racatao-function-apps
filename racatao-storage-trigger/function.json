@@ -1,19 +1,19 @@
 {
-  "disabled": false,
   "bindings": [
     {
       "name": "inputBlob",
       "type": "blobTrigger",
       "direction": "in",
       "path": "raw-files/{name}",
-      "connection": ""
+      "connection": "AzureWebJobsStorage"
     },
     {
       "name": "outputBlob",
       "type": "blob",
       "direction": "out",
       "path": "processed-files/{rand-guid}",
-      "connection": "AzureWebJobsDashboard"
+      "connection": "AzureWebJobsStorage"
     }
-  ]
+  ],
+  "disabled": false
 }

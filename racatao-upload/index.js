@@ -16,6 +16,6 @@ module.exports = function (context, req) {
             status: 400,
             body: "Please pass a name on the query string or in the request body"
         };
-        context.done();
     }
+    context.done();
 };

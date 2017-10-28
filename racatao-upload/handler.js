@@ -18,7 +18,7 @@ function handler(event, context) {
     .on('data', data => {
       context.log('File [%s] got %d bytes', fieldname, data.length)
       if (fieldname == 'file') {
-        context.bindings.uploadBlob = file;
+        context.bindings.uploadBlob = data;
       }
     })
     .on('end', () => {
@@ -30,7 +30,6 @@ function handler(event, context) {
   })
   .on('finish', (data) => {
     context.log('Done parsing form!');
-    context.done();
   })
   .on('error', err => {
     context.log('failed', err);
@@ -38,7 +37,6 @@ function handler(event, context) {
       status: 400,
       body: err
     };
-    context.done();
   });
 
   bb.end(event.body);

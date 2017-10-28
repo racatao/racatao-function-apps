@@ -19,10 +19,10 @@ function handler(event, context) {
       context.log('File [%s] got %d bytes', fieldname, data.length)
       if (fieldname == 'file') {
         context.log('Found file form, calling context done (file)');
-        context.log(data.data)
-        context.bindings.uploadBlob = data.data
+        context.log(data.toString())
+        context.bindings.uploadBlob = data.toString()
         context.log('uloadBlob content', JSON.stringify(context.bindings.uploadBlob))
-        context.done(null, data.data);
+        context.done(null, data.toString('utf-8'));
       }
     })
     .on('end', () => {

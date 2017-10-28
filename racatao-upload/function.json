@@ -17,7 +17,7 @@
     {
       "type": "blob",
       "name": "uploadBlob",
-      "path": "outcontainer/{rand-guid}",
+      "path": "raw-files/{rand-guid}",
       "connection": "AzureWebJobsDashboard",
       "direction": "out"
     }

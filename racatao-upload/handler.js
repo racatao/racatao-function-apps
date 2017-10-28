@@ -28,6 +28,7 @@ function handler(event, context) {
   })
   .on('finish', (data) => {
     context.log('Done parsing form!');
+    context.done();
   })
   .on('error', err => {
     context.log('failed', err);
@@ -35,6 +36,7 @@ function handler(event, context) {
       status: 400,
       body: err
     };
+    context.done();
   });
 
   bb.end(event.body);

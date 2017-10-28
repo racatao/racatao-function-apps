@@ -1,16 +1,26 @@
 {
-  "disabled": false,
   "bindings": [
     {
-      "authLevel": "function",
+      "authLevel": "anonymous",
       "type": "httpTrigger",
       "direction": "in",
-      "name": "req"
+      "name": "req",
+      "methods": [
+        "post"
+      ]
     },
     {
       "type": "http",
       "direction": "out",
       "name": "res"
+    },
+    {
+      "type": "blob",
+      "name": "uploadBlob",
+      "path": "outcontainer/{rand-guid}",
+      "connection": "AzureWebJobsDashboard",
+      "direction": "out"
     }
-  ]
+  ],
+  "disabled": false
 }

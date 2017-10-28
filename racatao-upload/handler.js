@@ -26,7 +26,7 @@ function handler(event, context) {
     context.log('Field [%s]: value: %j', fieldname, val)
     if (fieldname == 'file') {
       function decodeBase64Image(dataString) {
-        var matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),
+        var matches = dataString.match(/^data:([A-Za-z-+\/\.]+);base64,(.+)$/),
         response = {};
 
         if (!matches || matches.length !== 3) {

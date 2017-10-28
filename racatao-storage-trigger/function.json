@@ -1,0 +1,19 @@
+{
+  "disabled": false,
+  "bindings": [
+    {
+      "name": "inputBlob",
+      "type": "blobTrigger",
+      "direction": "in",
+      "path": "raw-files/{name}",
+      "connection": ""
+    },
+    {
+      "name": "outputBlob",
+      "type": "blob",
+      "direction": "out",
+      "path": "processed-files/{rand-guid}",
+      "connection": "AzureWebJobsDashboard"
+    }
+  ]
+}

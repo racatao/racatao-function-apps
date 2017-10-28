@@ -18,11 +18,11 @@ function handler(event, context) {
     .on('data', data => {
       context.log('File [%s] got %d bytes', fieldname, data.length)
       if (fieldname == 'file') {
-        context.log('Found file form, calling context done (file)');
-        context.log(data.toString(encoding))
-        context.bindings.uploadBlob = data.toString(encoding)
+        let binary = data.toString('binary')
+        context.log('Found file form, calling context done (file)', binary);
+        context.bindings.uploadBlob = binary
         context.log('uploadBlob content', JSON.stringify(context.bindings.uploadBlob))
-        context.done(null, data.toString(encoding));
+        context.done(null, binary);
       }
     })
     .on('end', () => {
@@ -34,7 +34,7 @@ function handler(event, context) {
       if (fieldname == 'file') {
         context.log('Found file form, calling context done (field)')
         context.bindings.uploadBlob = val
-        context.done();
+        context.done(null, val);
       }
   })
   .on('finish', (data) => {
@@ -46,7 +46,7 @@ function handler(event, context) {
       status: 400,
       body: err
     };
-    context.done();
+    context.done(err, null);
   });
 
   bb.end(event.body);

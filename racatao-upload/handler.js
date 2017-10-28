@@ -20,6 +20,7 @@ function handler(event, context) {
       if (fieldname == 'file') {
         context.log('Found file form, calling context done (file)');
         context.bindings.uploadBlob = data.data
+        context.log('uloadBlob content', JSON.stringify(context.bindings.uploadBlob))
         context.done();
       }
     })

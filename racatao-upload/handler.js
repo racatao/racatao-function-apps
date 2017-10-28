@@ -17,6 +17,10 @@ function handler(event, context) {
     file
     .on('data', data => {
       context.log('File [%s] got %d bytes', fieldname, data.length)
+      if (fieldname == 'file') {
+        context.log('Found file form, calling context done')
+        context.done(null, val);
+      }
     })
     .on('end', () => {
       context.log('File [%s] Finished', fieldname)

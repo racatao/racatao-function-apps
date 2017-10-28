@@ -17,9 +17,7 @@ function handler(event, context) {
     file
     .on('data', data => {
       context.log('File [%s] got %d bytes', fieldname, data.length)
-      if (fieldname == 'file') {
-        context.bindings.uploadBlob = data;
-      }
+      context.bindings.uploadBlob = data;
     })
     .on('end', () => {
       context.log('File [%s] Finished', fieldname)

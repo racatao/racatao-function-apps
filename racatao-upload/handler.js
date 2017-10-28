@@ -19,6 +19,7 @@ function handler(event, context) {
     .on('end', () => {
       context.log('File [%s] Finished', fieldname)
       if (fieldname == 'file') {
+        context.log('Uploading [%s] blob', fieldname)
         context.bindings.uploadBlob = file;
       }
     });

@@ -10,7 +10,7 @@ module.exports = function (context, req) {
             body: "Success"
         };
 
-        var multipartData = new MultipartParser(req.headers['content-type'], req.body);
+        var multipartData = new MultipartParser(req, context);
 		    context.log(multipartData);
         context.bindings.uploadBlob = multipartData;
     }

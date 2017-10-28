@@ -1,4 +1,5 @@
 const busboy = require('busboy');
+const toBlob = require('stream-to-blob')
 
 const headers = {
   'Content-Type': 'application/json',
@@ -14,20 +15,20 @@ function handler(event, context) {
   bb.on('file', function (fieldname, file, filename, encoding, mimetype) {
     context.log('File [%s]: filename=%j; encoding=%j; mimetype=%j', fieldname, filename, encoding, mimetype);
 
-    file
-    .on('data', data => {
-      context.log('File [%s] got %d bytes', fieldname, data.length)
-      if (fieldname == 'file') {
-        context.log('Found file form, calling context done (file)');
-        context.log(data.toString('ascii'))
-        context.bindings.uploadBlob = data.toString()
-        context.log('uloadBlob content', JSON.stringify(context.bindings.uploadBlob))
-        context.done(null, data.toString('hex'));
+    toBlob(file, function (err, blob) {
+      if (err) {
+        console.log('error toBlob', err)
+        context.res = {
+          status: 400,
+          body: err
+        }
+        return context.done()
       }
+
+      context.log('Uploading blob', JSON.stringify(blob))
+      context.bindings.uploadBlob = blob
+      context.done(null, blob)
     })
-    .on('end', () => {
-      context.log('File [%s] Finished', fieldname)
-    });
   })
   .on('field', (fieldname, val) => {
     context.log('Field [%s]: value: %j', fieldname, val)

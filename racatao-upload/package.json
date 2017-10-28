@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "busboy": "^0.2.14"
+    "busboy": "^0.2.14",
+    "stream-to-blob": "^1.0.0"
   }
 }

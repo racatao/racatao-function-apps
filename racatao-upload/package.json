@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "busboy": "^0.2.14",
-    "stream-to-blob": "^1.0.0"
+    "stream-to-blob": "^1.0.0",
+    "streamable-buffers": "^3.3.1"
   }
 }

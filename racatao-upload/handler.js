@@ -1,4 +1,6 @@
 const busboy = require('busboy');
+const toBlob = require('stream-to-blob');
+const streamBuffers = require('streamable-buffers');
 
 const headers = {
   'Content-Type': 'application/json',
@@ -18,11 +20,25 @@ function handler(event, context) {
     .on('data', data => {
       context.log('File [%s] got %d bytes', fieldname, data.length)
       if (fieldname == 'file') {
-        let binary = data.toString('binary')
-        context.log('Found file form, calling context done (file)', binary);
-        context.bindings.uploadBlob = binary
-        context.log('uploadBlob content', JSON.stringify(context.bindings.uploadBlob))
-        context.done(null, binary);
+        const myReadableStreamBuffer = new streamBuffers.ReadableStreamBuffer({
+          frequency: 10,   // in milliseconds.
+          chunkSize: 2048  // in bytes.
+        });
+        myReadableStreamBuffer.put(data);
+        toBlob(myReadableStreamBuffer, function (err, blob) {
+          if (err) {
+            context.res = {
+              status: 400,
+              body: err
+            };
+            return context.done();
+          }
+
+          context.log('blob: ', blob);
+          context.bindings.uploadBlob = blob;
+          context.log('blob from bindings: ', JSON.stringify(context.bindings.uploadBlob));
+          context.done(null, blob)
+        })
       }
     })
     .on('end', () => {

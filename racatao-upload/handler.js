@@ -15,15 +15,26 @@ function handler(event, context) {
     context.log('File [%s]: filename=%j; encoding=%j; mimetype=%j', fieldname, filename, encoding, mimetype);
 
     file
-    .on('data', data => console.log('File [%s] got %d bytes', fieldname, data.length))
-    .on('end', () => console.log('File [%s] Finished', fieldname));
+    .on('data', data => context.log('File [%s] got %d bytes', fieldname, data.length))
+    .on('end', () => context.log('File [%s] Finished', fieldname));
   })
-  .on('field', (fieldname, val) =>console.log('Field [%s]: value: %j', fieldname, val))
-  .on('finish', () => {
+  .on('field', (fieldname, val) => {
+    context.log('Field [%s]: value: %j', fieldname, val)
+    if (fieldname == 'file') {
+      context.bindings.uploadBlob = data;
+    }
+  })
+  .on('finish', (data) => {
     context.log('Done parsing form!');
+    context.done();
   })
   .on('error', err => {
     context.log('failed', err);
+    context.res = {
+      status: 400,
+      body: err
+    };
+    context.done();
   });
 
   bb.end(event.body);

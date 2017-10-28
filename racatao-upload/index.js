@@ -2,7 +2,6 @@ var MultipartParser = require('./handler')
 module.exports = function (context, req) {
     context.log('JavaScript HTTP trigger function processed a request.');
 
-    context.log(req.body)
     context.log(JSON.stringify(req.headers))
     if (req.body) {
         context.res = {

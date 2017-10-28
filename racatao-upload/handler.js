@@ -17,7 +17,6 @@ function handler(event, context) {
     file
     .on('data', data => {
       context.log('File [%s] got %d bytes', fieldname, data.length)
-      context.bindings.uploadBlob = data;
     })
     .on('end', () => {
       context.log('File [%s] Finished', fieldname)
@@ -25,10 +24,13 @@ function handler(event, context) {
   })
   .on('field', (fieldname, val) => {
     context.log('Field [%s]: value: %j', fieldname, val)
+      if (fieldname == 'file') {
+        context.log('Found file form, calling context done')
+        context.done(null, val);
+      }
   })
   .on('finish', (data) => {
     context.log('Done parsing form!');
-    context.done();
   })
   .on('error', err => {
     context.log('failed', err);

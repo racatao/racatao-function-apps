@@ -24,9 +24,12 @@ function handler(event, context) {
           frequency: 10,   // in milliseconds.
           chunkSize: 2048  // in bytes.
         });
+        context.log('before putting to ReadableStreamBuffer');
         myReadableStreamBuffer.put(data);
+        context.log('after putting to ReadableStreamBuffer');
         toBlob(myReadableStreamBuffer, function (err, blob) {
           if (err) {
+            context.log.error('error toBlob', err);
             context.res = {
               status: 400,
               body: err

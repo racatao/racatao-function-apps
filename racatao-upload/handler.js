@@ -29,7 +29,7 @@ function handler(event, context) {
         var matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),
         response = {};
 
-        if (matches.length !== 3) {
+        if (!matches || matches.length !== 3) {
           return new Error('Invalid input string');
         }
 
@@ -39,7 +39,7 @@ function handler(event, context) {
         return response;
       }
 
-      context.log('decoding buffer')
+      context.log('decoding buffer', val)
       const buffer = decodeBase64Image(val)
       context.log('buffer type', buffer.type)
       context.bindings.uploadBlob = buffer.data

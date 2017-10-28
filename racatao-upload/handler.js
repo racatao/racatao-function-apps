@@ -15,13 +15,14 @@ function handler(event, context) {
     context.log('File [%s]: filename=%j; encoding=%j; mimetype=%j', fieldname, filename, encoding, mimetype);
 
     file
-    .on('data', data => context.log('File [%s] got %d bytes', fieldname, data.length))
-    .on('end', () => {
-      context.log('File [%s] Finished', fieldname)
+    .on('data', data => {
+      context.log('File [%s] got %d bytes', fieldname, data.length)
       if (fieldname == 'file') {
-        context.log('Uploading [%s] blob', fieldname)
         context.bindings.uploadBlob = file;
       }
+    })
+    .on('end', () => {
+      context.log('File [%s] Finished', fieldname)
     });
   })
   .on('field', (fieldname, val) => {

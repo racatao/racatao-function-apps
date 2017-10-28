@@ -20,13 +20,6 @@
       "path": "raw-files/{rand-guid}",
       "connection": "AzureWebJobsDashboard",
       "direction": "out"
-    },
-    {
-      "type": "blob",
-      "name": "$return",
-      "path": "raw-files/{rand-guid}",
-      "connection": "AzureWebJobsDashboard",
-      "direction": "out"
     }
   ],
   "disabled": false

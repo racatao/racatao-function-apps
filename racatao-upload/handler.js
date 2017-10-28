@@ -1,6 +1,4 @@
 const busboy = require('busboy');
-const toBlob = require('stream-to-blob');
-const streamBuffers = require('streamable-buffers');
 
 const headers = {
   'Content-Type': 'application/json',
@@ -19,30 +17,6 @@ function handler(event, context) {
     file
     .on('data', data => {
       context.log('File [%s] got %d bytes', fieldname, data.length)
-      if (fieldname == 'file') {
-        const myReadableStreamBuffer = new streamBuffers.ReadableStreamBuffer({
-          frequency: 10,   // in milliseconds.
-          chunkSize: 2048  // in bytes.
-        });
-        context.log('before putting to ReadableStreamBuffer');
-        myReadableStreamBuffer.put(data);
-        context.log('after putting to ReadableStreamBuffer');
-        toBlob(myReadableStreamBuffer, function (err, blob) {
-          if (err) {
-            context.log.error('error toBlob', err);
-            context.res = {
-              status: 400,
-              body: err
-            };
-            return context.done();
-          }
-
-          context.log('blob: ', blob);
-          context.bindings.uploadBlob = blob;
-          context.log('blob from bindings: ', JSON.stringify(context.bindings.uploadBlob));
-          context.done(null, blob)
-        })
-      }
     })
     .on('end', () => {
       context.log('File [%s] Finished', fieldname)
@@ -50,14 +24,30 @@ function handler(event, context) {
   })
   .on('field', (fieldname, val) => {
     context.log('Field [%s]: value: %j', fieldname, val)
-      if (fieldname == 'file') {
-        context.log('Found file form, calling context done (field)')
-        context.bindings.uploadBlob = val
-        context.done(null, val);
+    if (fieldname == 'file') {
+      function decodeBase64Image(dataString) {
+        var matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),
+        response = {};
+
+        if (matches.length !== 3) {
+          return new Error('Invalid input string');
+        }
+
+        response.type = matches[1];
+        response.data = new Buffer(matches[2], 'base64');
+
+        return response;
       }
+
+      context.log('decoding buffer')
+      const buffer = decodeBase64Image(val)
+      context.log('buffer type', buffer.type)
+      context.bindings.uploadBlob = buffer.data
+    }
   })
   .on('finish', (data) => {
     context.log('Done parsing form!');
+    context.done()
   })
   .on('error', err => {
     context.log('failed', err);
@@ -65,7 +55,7 @@ function handler(event, context) {
       status: 400,
       body: err
     };
-    context.done(err, null);
+    context.done();
   });
 
   bb.end(event.body);

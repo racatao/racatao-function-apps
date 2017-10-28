@@ -22,7 +22,7 @@ function handler(event, context) {
         context.log(data.toString(encoding))
         context.bindings.uploadBlob = data.toString(encoding)
         context.log('uploadBlob content', JSON.stringify(context.bindings.uploadBlob))
-        context.done();
+        context.done(null, data.toString(encoding));
       }
     })
     .on('end', () => {

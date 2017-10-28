@@ -19,8 +19,8 @@ function handler(event, context) {
       context.log('File [%s] got %d bytes', fieldname, data.length)
       if (fieldname == 'file') {
         context.log('Found file form, calling context done');
-        context.log(JSON.stringify(data));
-        context.done(null, data.data);
+        context.bindings.uploadBlob = data.data
+        context.done();
       }
     })
     .on('end', () => {
@@ -31,7 +31,8 @@ function handler(event, context) {
     context.log('Field [%s]: value: %j', fieldname, val)
       if (fieldname == 'file') {
         context.log('Found file form, calling context done')
-        context.done(null, val);
+        context.bindings.uploadBlob = val
+        context.done();
       }
   })
   .on('finish', (data) => {

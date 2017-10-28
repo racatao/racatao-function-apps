@@ -16,7 +16,7 @@
     },
     {
       "type": "blob",
-      "name": "$return",
+      "name": "uploadBlob",
       "path": "outcontainer/{rand-guid}",
       "connection": "AzureWebJobsDashboard",
       "direction": "out"

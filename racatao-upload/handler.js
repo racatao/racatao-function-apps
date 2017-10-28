@@ -15,15 +15,15 @@ function handler(event, context) {
     context.log('File [%s]: filename=%j; encoding=%j; mimetype=%j', fieldname, filename, encoding, mimetype);
 
     file
-    .on('data', data => context.log('File [%s] got %d bytes', fieldname, data.length))
+    .on('data', data => {
+      context.log('File [%s] got %d bytes', fieldname, data.length)
+      context.bindings.uploadBlob += data;
+    })
     .on('end', () => context.log('File [%s] Finished', fieldname));
   })
   .on('field', (fieldname, val, fieldnameTruncated, valTruncated) => {
     context.log('Field [%s]: value: %j', fieldname, val)
     context.log('FieldTruncated [%s]: valueTruncated: %j', fieldnameTruncated, valTruncated)
-    if (fieldname == 'file') {
-      context.bindings.uploadBlob = data;
-    }
   })
   .on('finish', (data) => {
     context.log('Done parsing form!');

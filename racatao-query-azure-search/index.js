@@ -17,17 +17,14 @@ module.exports = function (context, req) {
         }
       })
       .then((response) => {
+        context.log('received response', response)
         context.res = {
           status: 200,
           body: {
             data: response.value.map((el) => el.metadata_storage_name),
             count: response.value.length
-          },
-          headers: {
-            content_type: 'application/json'
           }
         }
-        context.log(response.value.length, response.value)
         context.done();
       })
       .catch((err) => {

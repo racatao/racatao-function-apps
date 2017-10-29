@@ -27,6 +27,7 @@ module.exports = function (context, req) {
           }
         }
         context.log(response.value.length, response.value)
+        context.done();
       })
       .catch((err) => {
         context.res = {
@@ -34,7 +35,7 @@ module.exports = function (context, req) {
           body: "Error querying AzureSearch API"
         }
         context.log('err', err)
+        context.done();
       })
     }
-    context.done();
 };

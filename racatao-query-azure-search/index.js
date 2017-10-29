@@ -14,7 +14,8 @@ module.exports = function (context, req) {
           search,
           'api-key': '5112AF0AAE64FF3EE9428CB0794C8034',
           'api-version': '2016-09-01'
-        }
+        },
+        json: true
       })
       .then((response) => {
         context.log('received response', response)

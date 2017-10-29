@@ -5,7 +5,8 @@ module.exports = function (context, req) {
     context.log('JavaScript HTTP trigger function processed a request.');
 
     if (req.params && req.params.search) {
-      const search = req.body.search
+      const search = req.params.search
+      context.log('Searching for ' + search)
       rp({
         method: 'GET',
         url: 'https://racatao-documents.search.windows.net/indexes/raw-files-index/docs',
